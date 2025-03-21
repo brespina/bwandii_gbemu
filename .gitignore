@@ -3,7 +3,12 @@ build/
 .vscode
 .vscode/
 
-*/vscode/*
+**/.vscode/
+
 
 cache/
-**/cache/
+**/**/cache/
+
+zzzzzzz/
+**/zzzzzzz/
+**/**/zzzzzzz/
