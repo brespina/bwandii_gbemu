@@ -1,4 +1,4 @@
-#include <cart.h>
+#include "cart.h"
 
 typedef struct {
     char filename[1024];
@@ -168,7 +168,21 @@ bool cart_load(char *cart) {
 
     // not sure how checksum works but it bitwise AND(x, 0xFF) so any non-zero result is passed
     printf("\t Checksum : %2.2X (%s)\n", ctx.header->checksum, (x & 0xFF) ? "PASSED" : "FAILED");
+    
 
     return true;
 
 }
+
+u8 cart_read(u16 address){
+  //for now just ROM ONLY type supported...
+  //
+  return ctx.rom_data[address];
+}
+
+void cart_write(u16 address, u8 value) {
+  // for now ROM ONLY so no writing...
+    
+    NO_IMPL
+}
+

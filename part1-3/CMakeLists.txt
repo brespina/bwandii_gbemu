@@ -4,6 +4,10 @@ cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 ###############################################################################
+# clangd can't find header files without this
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+###############################################################################
 # Set build features
 set(CMAKE_BUILD_TYPE Debug)
 
@@ -95,3 +99,6 @@ add_subdirectory(tests)
 enable_testing()
 add_test(NAME check_gbe COMMAND check_gbe)
 
+###############################################################################
+# clangd won't let implicit function declaration.
+include_directories(${CMAKE_SOURCE_DIR}/include)
