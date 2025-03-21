@@ -6,8 +6,8 @@ build/
 **/.vscode/
 
 
-cache/
-**/**/cache/
+.cache/
+**/**/.cache/
 
 zzzzzzz/
 **/zzzzzzz/
