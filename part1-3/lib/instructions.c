@@ -2,24 +2,84 @@
 #include "cpu.h"
 
 instruction instructions[0x100] = {
+  // [opcode]  [in_type, addr_mode, reg_type, cond_type, u8]
+
   [0x00] = {IN_NOP, AM_IMP},
-
+  [0x01] = {IN_LD, AM_R_D16, RT_BC},
+  [0x02] = {IN_LD, AM_R_D16, RT_BC, RT_A},
+  [0x03] = {IN_INC, AM_R, RT_BC},
+  [0x04] = {IN_INC, AM_R, RT_B},
   [0x05] = {IN_DEC, AM_R, RT_B},
-
+  [0x06] = {IN_LD, AM_R_D8, RT_B},
+  [0x07] = {IN_RLCA},
+  [0x08] = {IN_LD, AM_A16_R, RT_NONE, RT_SP},
+  [0x09] = {IN_ADD, AM_R_R, RT_HL, RT_BC},
+  [0x0A] = {IN_LD, AM_R_MR, RT_A, RT_BC},
+  [0x0B] = {IN_DEC, AM_R, RT_BC},
+  [0x0C] = {IN_INC, AM_R, RT_C},
+  [0x0D] = {IN_LD, AM_R_MR, RT_A, RT_BC},
   [0x0E] = {IN_LD, AM_R_D8, RT_C},
+  [0x0F] = {IN_RRCA},
+
+  [0x10] = {IN_STOP, AM_IMP},
+  [0x11] = {IN_LD, AM_R_D16, RT_DE},
+  [0x12] = {IN_LD, AM_R_D16, RT_DE, RT_A},
+  [0x13] = {IN_INC, AM_R, RT_DE},
+  [0x14] = {},
+  [0x15] = {},
+  [0x16] = {},
+  [0x17] = {},
+  [0x18] = {},
+  [0x19] = {},
+  [0x1A] = {},
+  [0x1B] = {},
+  [0x1C] = {},
+  [0x1D] = {},
+  [0x1E] = {},
+  [0x1F] = {},
+
+  [0x20] = {IN_JR, AM_R, RT_A},
+  [0x21] = {IN_LD, AM_R_D16, RT_HL},
+  [0x22] = {},
+  [0x23] = {},
+  [0x24] = {},
+  [0x25] = {},
+  [0x26] = {},
+  [0x27] = {},
+  [0x28] = {},
+  [0x29] = {},
+  [0x2A] = {},
+  [0x2B] = {},
+  [0x2C] = {},
+  [0x2D] = {},
+  [0x2E] = {},
+  [0x2F] = {},
+
+
+  [0x30] = {},
+  [0x31] = {IN_LD, AM_R_D16, RT_SP},
+  [0x32] = {},
+  [0x33] = {},
+  [0x34] = {},
+  [0x35] = {},
+  [0x36] = {},
+  [0x37] = {},
+  [0x38] = {},
+  [0x39] = {},
+  [0x3A] = {},
+  [0x3B] = {},
+  [0x3C] = {},
+  [0x3D] = {},
+  [0x3E] = {},
+  [0x3F] = {},
 
   [0xAF] = {IN_XOR, AM_R, RT_A},
-
   [0xC3] = {IN_JP, AM_D16},
 
   [0xF3] = {IN_DI},
 };
 
 instruction *instruction_by_opcode(u8 opcode){
-  if(instructions[opcode].type == IN_NONE) {
-    return NULL;
-  }
-
   return &instructions[opcode];
 }
 
@@ -78,3 +138,4 @@ char *inst_lookup[] = {
 char *inst_name(in_type t) {
     return inst_lookup[t];
 }
+

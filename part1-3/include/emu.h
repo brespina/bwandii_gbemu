@@ -14,3 +14,4 @@ emu_context *emu_get_context();
 
 
 void emu_cycles(int cpu_cycles);
+

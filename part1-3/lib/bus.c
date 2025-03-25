@@ -34,3 +34,4 @@ void bus_write(u16 address, u8 value) {
   NO_IMPL
 
 }
+

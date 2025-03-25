@@ -27,3 +27,4 @@ u16 cpu_read_reg(reg_type rt) {
     default: return 0;
   }
 }
+
