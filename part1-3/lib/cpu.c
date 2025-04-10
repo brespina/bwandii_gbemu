@@ -5,16 +5,16 @@
 cpu_context ctx = {0};
 
 void cpu_init() {
-  ctx.regs.pc = 0x0100;
-  ctx.regs.a  = 0x0001;
+  ctx.regs.pc = 0x100;
+  ctx.regs.a  = 0x01;
 }
 
 static void fetch_instruction() {
   ctx.curr_opcode = bus_read(ctx.regs.pc++);
   ctx.curr_inst = instruction_by_opcode(ctx.curr_opcode);
-
 } 
 
+void fetch_data();
 
 
 static void execute() {

@@ -2,7 +2,7 @@
 #include "emu.h"
 #include "bus.h"
 
-static cpu_context ctx;
+extern cpu_context ctx;
 
 void fetch_data() {
   ctx.mem_dest = 0;
@@ -28,7 +28,7 @@ void fetch_data() {
       return;
 
     case AM_R_D16:    
-    case AM_D16: 
+    case AM_D16: {
       u16 lo = bus_read(ctx.regs.pc);
       emu_cycles(1);
 
@@ -39,7 +39,7 @@ void fetch_data() {
 
       ctx.regs.pc += 2;
 
-      return;
+      } return;
     
     case AM_MR_R:
       ctx.fetched_data = cpu_read_reg(ctx.curr_inst->reg_2);
@@ -52,7 +52,7 @@ void fetch_data() {
 
       return;
 
-    case AM_R_MR:
+    case AM_R_MR: {
       u16 addr = cpu_read_reg(ctx.curr_inst->reg_2);
 
       if (ctx.curr_inst->reg_1 == RT_C) {
@@ -61,7 +61,7 @@ void fetch_data() {
 
       ctx.fetched_data = bus_read(addr);
       emu_cycles(1);
-      return;
+      } return;
 
     case AM_R_HLI:
       ctx.fetched_data = bus_read(cpu_read_reg(ctx.curr_inst->reg_2));
@@ -116,9 +116,49 @@ void fetch_data() {
       return;
 
 
-    case AM_D16_R:
-      
+    case AM_A16_R:
+    case AM_D16_R: {
+      u16 lo = bus_read(ctx.regs.pc);
+      emu_cycles(1);
 
+      u16 hi = bus_read(ctx.regs.pc + 1);
+      emu_cycles(1);
+
+      ctx.mem_dest = lo | (hi << 8);
+      ctx.dest_is_mem = true;
+
+      ctx.regs.pc += 2;
+      ctx.fetched_data = cpu_read_reg(ctx.curr_inst->reg_2);
+      } return;
+
+    case AM_MR_D8:
+      ctx.fetched_data = bus_read(ctx.regs.pc);
+      emu_cycles(1);
+
+      ctx.regs.pc++;
+      ctx.mem_dest = cpu_read_reg(ctx.curr_inst->reg_1);
+      ctx.dest_is_mem = true;
+      return;
+
+    case AM_MR:
+      ctx.mem_dest = cpu_read_reg(ctx.curr_inst->reg_1);
+      ctx.dest_is_mem = true;
+      ctx.fetched_data = bus_read(cpu_read_reg(ctx.curr_inst->reg_1));
+      emu_cycles(1);
+      return;
+
+    case AM_R_A16: {
+      u16 lo = bus_read(ctx.regs.pc);
+      emu_cycles(1);
+
+      u16 hi = bus_read(ctx.regs.pc + 1);
+      emu_cycles(1);
+
+      u16 addr = lo | (hi << 8);
+
+      ctx.regs.pc += 2;
+      ctx.fetched_data = bus_read(addr);
+      } return;
 
     default: 
       printf("Unknown Addressing Mode! %d (%02X)\n", ctx.curr_inst->mode, ctx.curr_opcode);
@@ -126,6 +166,4 @@ void fetch_data() {
       return;
   }
 }
-
-
 

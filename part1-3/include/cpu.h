@@ -43,8 +43,8 @@ IN_PROC inst_get_processor(in_type type);
 
 
 u16 cpu_read_reg(reg_type rt);
-
-static void fetch_data();
+void cpu_set_reg(reg_type rt, u16 val);
+void fetch_data();
 
 // this gives value of 0 flag and carry flag
 #define  CPU_FLAG_Z BIT(ctx->regs.f, 7)
